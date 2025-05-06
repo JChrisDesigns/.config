@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 # Set full paths in case environment is limited
 AERO="/opt/homebrew/bin/aerospace"
 SKETCHYBAR="/opt/homebrew/bin/sketchybar"
@@ -18,12 +17,15 @@ for sid in $("$AERO" list-workspaces --all); do
 
             app = $1
             color = "0xFFFFFF"
+            # Here is where you add your icons
                 if (app == "Notion Mail") {
-                    app = ""
+                    app = ""
                 } else if (app == "Notion") {
                     app = ""
                 } else if (app == "Notes") {
                     app = ""
+                } else if (app == "Safari") {
+                    app = ""
                 } else if (app == "Messages") {
                     app = "󰭹"
                 } else if (app == "Brave Browser") {
@@ -33,9 +35,11 @@ for sid in $("$AERO" list-workspaces --all); do
                 } else if (app == "Code") {
                     app = ""
                 } else if (app == "Finder") {
-                    app = "󰀶"
+                    app = ""
                 } else if (app == "Print Center") {
                     app = ""
+                } else if (app == "System Settings") {
+                    app = ""
                 } else if (app == "Spotify") {
                     app = ""
                 } else if (app == "Legcord") {

@@ -3,11 +3,11 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 ##### Bar Appearance #####
 sketchybar --bar              \
         position=top          \
-        padding_left=8        \
+        padding_left=0        \
         padding_right=0        \
         height=32             \
         blur_radius=15        \
-        color=0x75171717      \
+        color=0x00000000      \
         margin=8              \
         y_offset=4            \
         corner_radius=8
@@ -16,10 +16,10 @@ sketchybar --bar              \
 default=(
   padding_left=0
   padding_right=0
-  icon.font="RobotoMono Nerd Font:Bold:12.0"
-  label.font="RobotoMono Nerd Font:Bold:18.0"
+  icon.font="JetbrainsMono Nerd Font:Bold:16.0"
+  label.font="JetbrainsMono Nerd Font:Bold:22 .0"
   label.color=0xffffffff
-  label.padding_left=8
+  label.padding_left=4
   label.padding_right=8
 )
 sketchybar --default "${default[@]}"
@@ -35,18 +35,21 @@ for sid in $(/opt/homebrew/bin/aerospace list-workspaces --all); do
         --subscribe space.$sid aerospace_workspace_change \
         --set space.$sid \
         padding_right=8 \
+        background.corner_radius=8 \
+        background.height=30 \
+        background.drawing=on \
+        background.border_width=2 \
+        background.border_color=0xFFFFFFFF \
+        \
         icon=$sid \
-        icon.background.drawing=on \
-        icon.background.height=26 \
         icon.padding_left=8 \
         icon.padding_right=8 \
         icon.background.corner_radius=8 \
-        background.corner_radius=8 \
-        background.height=24 \
-        background.drawing=on \
-        background.color=0x65b9b9b9 \
         script="$PLUGIN_DIR/aerospace.sh $sid"
 done
+
+# Add grouping
+
 
 # Adding Right Items
 sketchybar --add item clock right \
