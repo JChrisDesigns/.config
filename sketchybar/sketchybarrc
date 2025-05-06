@@ -19,7 +19,7 @@ default=(
   icon.font="JetbrainsMono Nerd Font:Bold:16.0"
   label.font="JetbrainsMono Nerd Font:Bold:22 .0"
   label.color=0xffffffff
-  label.padding_left=4
+  label.padding_left=8
   label.padding_right=8
 )
 sketchybar --default "${default[@]}"
@@ -44,6 +44,7 @@ for sid in $(/opt/homebrew/bin/aerospace list-workspaces --all); do
         icon=$sid \
         icon.padding_left=8 \
         icon.padding_right=8 \
+        icon.background.height=30 \
         icon.background.corner_radius=8 \
         script="$PLUGIN_DIR/aerospace.sh $sid"
 done
