@@ -1,77 +1,61 @@
-#!/bin/sh
-
-# Set full paths in case environment is limited
 AERO="/opt/homebrew/bin/aerospace"
 SKETCHYBAR="/opt/homebrew/bin/sketchybar"
 
-# Get app names and workspaces
-tmpfile=$(mktemp)
-"$AERO" list-windows --all --format "%{app-name} | %{workspace}" > "$tmpfile"
+seen=()
 
-# Get all workspace IDs
-for sid in $("$AERO" list-workspaces --all); do
-    label=$(awk -F '|' -v sid="$sid" '
-        {
-            gsub(/^[ \t]+|[ \t]+$/, "", $1);  # trim app
-            gsub(/^[ \t]+|[ \t]+$/, "", $2);  # trim workspace
+while IFS='|' read -r app_raw ws_raw; do
+  app=$(echo "$app_raw" | sed 's/^[ \t]*//;s/[ \t]*$//')
+  ws=$(echo "$ws_raw" | sed 's/^[ \t]*//;s/[ \t]*$//')
 
-            app = $1
-            color = "0xFFFFFF"
-            # Here is where you add your icons
-                if (app == "Notion Mail") {
-                    app = ""
-                } else if (app == "Notion") {
-                    app = ""
-                } else if (app == "Figma") {
-                    app = ""
-                } else if (app == "Notes") {
-                    app = ""
-                } else if (app == "Safari") {
-                    app = ""
-                } else if (app == "Messages") {
-                    app = "󰭹"
-                } else if (app == "Goodnotes") {
-                    app = ""
-                } else if (app == "Brave Browser") {
-                    app = ""
-                } else if (app == "Ghostty") {
-                    app = ""
-                } else if (app == "Code") {
-                    app = ""
-                } else if (app == "Finder") {
-                    app = ""
-                } else if (app == "Print Center") {
-                    app = ""
-                } else if (app == "System Settings") {
-                    app = ""
-                } else if (app == "Spotify") {
-                    app = ""
-                } else if (app == "Legcord") {
-                    app = ""
-                } else if (app == "Preview") {
-                    app = ""
-                } else if (app == "Dev Server") {
-                    app = ""
-                }
+  # Skip if already seen
+  [[ " ${seen[*]} " == *" $app "* ]] && continue
+  seen+=("$app")
 
-            if ($2 == sid) {
-                # Avoid duplicate apps
-                if (!seen[$1]++) apps = (apps ? apps "  " : "") app
-            }
-        }
-        END {
-            print (apps ? apps : null)
-        }
-    ' "$tmpfile")
+  # Record canonical item name
+  item_name="app.${app// /_}"
+  open_apps+=("$item_name")
 
-    # Need to add logic in that makes it so that the labels are calculated and added all together
-    if [[ "$label" == "" ]]; then
-        "$SKETCHYBAR" --set space.$sid label.drawing=off
-    else
-        "$SKETCHYBAR" --set space.$sid label="$label" label.drawing=on
-    fi
-    
-  
+  app_color=0xFFFFFFFF
+
+  # Icon mapping
+  case "$app" in
+    "Notion Mail") app_icon="";;
+    "Notion") app_icon="" ;;
+    "Figma") app_icon="" ;;
+    "Notes") app_icon="" ;;
+    "Safari") app_icon="" ;;
+    "Messages") app_icon="󰭹" ;;
+    "Goodnotes") app_icon="" ;;
+    "Brave Browser") app_icon="" ;;
+    "Ghostty") app_icon="" ;;
+    "Code") app_icon="" app_color=0xFF1D88EB;;
+    "Finder") app_icon="" ;;
+    "Print Center") app_icon="" ;;
+    "System Settings") app_icon="" ;;
+    "Spotify") app_icon="" app_color=0xFF24D34E;;
+    "Legcord") app_icon="" ;;
+    "Preview") app_icon="" ;;
+    "Dev Server") app_icon="" ;;
+    *) app_icon="" ;;
+  esac
+
+  # Use app name as Sketchybar item name
+  item_name="app.${app// /_}" # Replace spaces with underscores
+
+  # Set label only if icon is defined
+  if [[ -n "$app_icon" ]]; then
+    "$SKETCHYBAR" --add item "$item_name" left \
+                  --set "$item_name" label="$app_icon" label.padding_right=0 label.color="$app_color" \
+                  --move "$item_name" after "space.$ws"
+  fi
+
+done < <("$AERO" list-windows --all --format "%{app-name} | %{workspace}")
+
+# Now remove any app.* item that is no longer open
+existing_app_items=$("$SKETCHYBAR" --query bar | jq -r '.items[] | select(startswith("app."))')
+
+for item in $existing_app_items; do
+  if [[ ! " ${open_apps[*]} " =~ " $item " ]]; then
+    "$SKETCHYBAR" --remove "$item"
+  fi
 done
-
-rm -f "$tmpfile"

@@ -14,13 +14,11 @@ sketchybar --bar              \
 
 ##### Changing Defaults #####
 default=(
-  padding_left=0
-  padding_right=0
+  padding_right=8
   icon.font="JetbrainsMono Nerd Font:Bold:16.0"
+  icon.color=0xFFFFFFFF
   label.font="JetbrainsMono Nerd Font:Bold:22 .0"
-  label.color=0xffffffff
-  label.padding_left=8
-  label.padding_right=8
+  label.color=0xFFFFFFFFF
 )
 sketchybar --default "${default[@]}"
 
@@ -35,6 +33,10 @@ for sid in $(/opt/homebrew/bin/aerospace list-workspaces --all); do
         --subscribe space.$sid aerospace_workspace_change \
         --set space.$sid \
         padding_right=8 \
+        icon.padding_right=0 \
+        label.padding_right=0 \
+        padding_right=8 \
+        padding_left=0 \
         background.corner_radius=8 \
         background.height=30 \
         background.drawing=on \
@@ -42,15 +44,10 @@ for sid in $(/opt/homebrew/bin/aerospace list-workspaces --all); do
         background.border_color=0xFFFFFFFF \
         \
         icon=$sid \
-        icon.padding_left=8 \
-        icon.padding_right=8 \
         icon.background.height=30 \
         icon.background.corner_radius=8 \
         script="$PLUGIN_DIR/aerospace.sh $sid"
 done
-
-# Add grouping
-
 
 # Adding Right Items
 sketchybar --add item clock right \
@@ -64,8 +61,8 @@ sketchybar --add item clock right \
 ##### Trigger Workspace Updates on Event #####
 sketchybar --add item refresh_workspaces left \
            --subscribe refresh_workspaces aerospace_window_change \
-           --set refresh_workspaces script="$PLUGIN_DIR/update_workspaces.sh" \
-                                     drawing=off
+           --set refresh_workspaces script="$PLUGIN_DIR/update_workspaces.lua" \
+                 drawing=off
 
 ##### Force all scripts to run initially #####
 sketchybar --update
