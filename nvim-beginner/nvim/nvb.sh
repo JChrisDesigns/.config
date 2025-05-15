@@ -1,0 +1,1 @@
+../../../neovim-beginners/nvb.sh

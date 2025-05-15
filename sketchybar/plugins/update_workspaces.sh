@@ -22,12 +22,16 @@ for sid in $("$AERO" list-workspaces --all); do
                     app = ""
                 } else if (app == "Notion") {
                     app = ""
+                } else if (app == "Figma") {
+                    app = ""
                 } else if (app == "Notes") {
                     app = ""
                 } else if (app == "Safari") {
                     app = ""
                 } else if (app == "Messages") {
                     app = "󰭹"
+                } else if (app == "Goodnotes") {
+                    app = ""
                 } else if (app == "Brave Browser") {
                     app = ""
                 } else if (app == "Ghostty") {
