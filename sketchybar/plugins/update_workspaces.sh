@@ -4,6 +4,9 @@ AERO="/opt/homebrew/bin/aerospace"
 SKETCHYBAR="/opt/homebrew/bin/sketchybar"
 STATE_FILE="/tmp/sketchybar_app_state.json"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/app_config.sh"
+
 index=0
 open_apps=()
 curr_state="[]"
@@ -34,28 +37,8 @@ for line in "${aero_lines[@]}"; do
     'map(select(.item_name == $item and .workspace == $ws)) | length == 0')
 
   if [[ "$changed" == "true" ]]; then
-    app_color=0xFFFFFFFF
-
-    case "$app" in
-      "Notion Mail") app_icon="";;
-      "Notion") app_icon="";;
-      "Figma") app_icon="";;
-      "Notes") app_icon="";;
-      "Safari") app_icon="";;
-      "Messages") app_icon="󰭹"; app_color=0xFF4BF15B;;
-      "Goodnotes") app_icon="";;
-      "Brave Browser") app_icon="󰾔"; app_color=0xFFE44C21;;
-      "Ghostty") app_icon="󰊠";;
-      "Code") app_icon=""; app_color=0xFF1D88EB;;
-      "Finder") app_icon="";;
-      "Print Center") app_icon="";;
-      "System Settings") app_icon="";;
-      "Spotify") app_icon=""; app_color=0xFF24D34E;;
-      "Legcord") app_icon="";;
-      "Preview") app_icon="";;
-      "Dev Server") app_icon="";;
-      *) app_icon="";;
-    esac
+    app_icon=$(get_app_icon "$app")
+    app_color=$(get_app_color "$app")
 
     if [[ -n "$app_icon" ]]; then
       "$SKETCHYBAR" --add item "$item_name" left \
