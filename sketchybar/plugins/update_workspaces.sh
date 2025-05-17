@@ -23,10 +23,10 @@ while IFS='|' read -r app_raw ws_raw; do
     "Figma") app_icon="";;
     "Notes") app_icon="";;
     "Safari") app_icon="";;
-    "Messages") app_icon="󰭹";;
+    "Messages") app_icon="󰭹"; app_color=0xFF4BF15B;;
     "Goodnotes") app_icon="";;
     "Brave Browser") app_icon="󰾔"; app_color=0xFFE44C21;;
-    "Ghostty") app_icon="";;
+    "Ghostty") app_icon="󰊠";;
     "Code") app_icon=""; app_color=0xFF1D88EB;;
     "Finder") app_icon="";;
     "Print Center") app_icon="";;
@@ -40,7 +40,9 @@ while IFS='|' read -r app_raw ws_raw; do
 
   if [[ -n "$app_icon" ]]; then
     "$SKETCHYBAR" --add item "$item_name" left \
-                  --set "$item_name" label="$app_icon" label.padding_right=0 label.color="$app_color" \
+                  --set "$item_name" label="$app_icon" \
+                  label.padding_right=4 label.padding_left=0 \
+                  padding_left=0 label.color="$app_color" \
                   --move "$item_name" after "space.$ws"
   fi
 done < <("$AERO" list-windows --all --format "%{app-name} | %{workspace}")
