@@ -2,7 +2,8 @@ after-startup-command = ['exec-and-forget brew services start sketchybar',
 'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=1.0']
 
 exec-on-workspace-change = ['/bin/bash', '-c',
-  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+  'sketchybar --trigger aerospace_window_change'
 ]
 
 on-focus-changed = ['exec-and-forget /Users/jordanb/.config/sketchybar/plugins/update_workspaces.sh']

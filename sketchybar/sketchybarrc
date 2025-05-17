@@ -16,11 +16,11 @@ sketchybar --bar              \
 default=(
   padding_right=4
   padding_left=4
-  icon.padding_right=4
+  icon.padding_right=0
   icon.padding_left=0
-  icon.font="JetbrainsMono Nerd Font:Bold:14.0"
+  icon.font="JetbrainsMono Nerd Font:Bold:16.0"
   icon.color=0xFFFFFFFF
-  label.font="JetbrainsMono Nerd Font:Bold:20.0"
+  label.font="JetbrainsMono Nerd Font:Bold:22.0"
   label.color=0xFFFFFFFFF
 )
 sketchybar --default "${default[@]}"
@@ -37,6 +37,7 @@ for sid in $(/opt/homebrew/bin/aerospace list-workspaces --all); do
         --set space.$sid \
         icon=$sid \
         padding_left=0 \
+        padding_right=0 \
         icon.padding_right=0 \
         label.padding_right=0 \
         background.corner_radius=8 \
@@ -45,29 +46,36 @@ for sid in $(/opt/homebrew/bin/aerospace list-workspaces --all); do
         \
         icon.background.height=30 \
         icon.background.corner_radius=8 \
-        script="$PLUGIN_DIR/aerospace.sh $sid"
+        script="$PLUGIN_DIR/aerospace.sh $sid" \
+        --add item space.$sid.p left \
+        --set space.$sid.p padding_left=0 padding_right=0 icon.padding_right=0 \
+        --add bracket bracket.$sid space.$sid space.$sid.p \
+        --set bracket.$sid background.color=0x751E2127 background.height=30 \
+        background.corner_radius=8 \
+        --add item pad.$sid left \
+        --set pad.$sid padding_left=0 padding_right=2  \
+        --move pad.$sid after space.$sid.p
 done
 
-sketchybar --add bracket bracket1 '/space\..*/'\
-           --set         bracket1 background.color=0xFF1E2127 background.height=30 \
-                                  background.corner_radius=8 background.border_color=0xFF1E2127 \
-                                  background.border_width=2
+# sketchybar --add bracket bracket1 space.1 space.1.padding space.2 space.2.padding space.3 space.3.padding space.4 space.4.padding space.5 space.5.padding space.6 space.6.padding\
+#            --set         bracket1 background.color=0xFF1E2127 background.height=30 \
+#                                   background.corner_radius=8 background.border_color=0xFF1E2127 \
+#                                   background.border_width=2
 
 # Adding Right Items
 sketchybar --add item clock right \
            --set clock label.font="RobotoMono Nerd Font:Bold:14.0" icon.font="RobotoMono Nerd Font:Bold:14.0" \
-                 padding_left=16 padding_right=16 \
+                 padding_left=8 padding_right=16 \
            --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
            --add item battery right \
            --set battery label.font="RobotoMono Nerd Font:Bold:14.0" icon.font="RobotoMono Nerd Font:Bold:16.0" \
-                 padding_left=16 \
+                 padding_left=16 icon.padding_right=8\
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
 sketchybar --add bracket bracket2 clock battery \
-           --set         bracket2 background.color=0xFF1E2127 background.height=30 \
-                                  background.corner_radius=8 background.border_color=0xFF1E2127 \
-                                  background.border_width=2 padding_left=8 padding_right=8
+           --set         bracket2 background.color=0x751E2127 background.height=30 \
+                                  background.corner_radius=8 padding_left=8 padding_right=8 
 
 
 ##### Trigger Workspace Updates on Event #####
