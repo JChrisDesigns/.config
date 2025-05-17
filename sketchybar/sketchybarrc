@@ -20,7 +20,7 @@ default=(
   icon.padding_left=0
   icon.font="JetbrainsMono Nerd Font:Bold:14.0"
   icon.color=0xFFFFFFFF
-  label.font="JetbrainsMono Nerd Font:Bold:22 .0"
+  label.font="JetbrainsMono Nerd Font:Bold:20.0"
   label.color=0xFFFFFFFFF
 )
 sketchybar --default "${default[@]}"
@@ -57,9 +57,9 @@ sketchybar --add bracket bracket1 '/space\..*/'\
 sketchybar --add item clock right \
            --set clock label.font="RobotoMono Nerd Font:Bold:14.0" icon.font="RobotoMono Nerd Font:Bold:14.0" \
                  padding_left=16 padding_right=16 \
-           --set clock update_freq=10 icon=  script="$PLUGIN_DIR/clock.sh" \
+           --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
            --add item battery right \
-           --set battery label.font="RobotoMono Nerd Font:Bold:14.0" icon.font="RobotoMono Nerd Font:Bold:14.0" \
+           --set battery label.font="RobotoMono Nerd Font:Bold:14.0" icon.font="RobotoMono Nerd Font:Bold:16.0" \
                  padding_left=16 \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
